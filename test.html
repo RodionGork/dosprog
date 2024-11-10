@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turbo Pascal 5.5 (thanks to JS-dos)</title>
+    <style>
+        html, body {
+            height: 100%;
+        }
+        #dos {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="./js-dos.css">
+    <script src="./js-dos.js"></script>
+</head>
+<body>
+
+    <div id="dos" style="width: 100%; height: 100%"></div>
+
+    <script>
+        Dos(document.getElementById("dos"), {
+            url: "./diskc.zip",
+            autoStart: true,
+            onEvent: (event, ci) => {
+                if (event === "ci-ready") {
+                    window.ci1 = ci;
+                    let ppos = location.href.indexOf('?p=');
+                    if (ppos > 0) {
+                        let data = atob(location.href.substring(ppos+3));
+                        if (data.substring(0, 5) == 'https') {
+                            let req = new XMLHttpRequest();
+                            req.open('GET', data, false);
+                            req.send(null);
+                            data = (req.status === 200) ? req.responseText : '{error loading file}';
+                        }
+                        data = data.replace(/(?<!\r)\n/g, '\r\n');
+                        ci.fsWriteFile('prg.pas', new TextEncoder().encode(data));
+                    } else {
+                        ci.fsWriteFile('nofile.pas', new TextEncoder().encode("ooops"));
+                    }
+                }
+            }});
+    </script>
+</body>
+</html>
