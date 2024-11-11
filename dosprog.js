@@ -4,7 +4,7 @@ Dos(document.getElementById("dos"), {
     onEvent: (event, ci) => {
         if (event === "ci-ready") {
             window.ci1 = ci;
-            let ppos = location.href.indexOf('?p=');
+            let ppos = location.href.toLowerCase().indexOf('?p=');
             if (ppos > 0) {
                 let data = atob(location.href.substring(ppos+3));
                 if (data.substring(0, 5) == 'https') {
@@ -14,7 +14,8 @@ Dos(document.getElementById("dos"), {
                     data = (req.status === 200) ? req.responseText : '{error loading file}';
                 }
                 data = data.replace(/(?<!\r)\n/g, '\r\n');
-                ci.fsWriteFile(dosprog.fname, new TextEncoder().encode(data));
+                let fname = (location.href.substring(ppos+1, ppos+2) == 'p') ? dosprog.fname : dosprog.autofile;
+                ci.fsWriteFile(fname, new TextEncoder().encode(data));
             } else {
                 ci.fsWriteFile(dosprog.nofile, new TextEncoder().encode("ooops"));
             }
