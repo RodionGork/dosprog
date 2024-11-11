@@ -13,20 +13,33 @@
 
 <hr/>
 
-<p>To create pre-loaded program, enter code (or https url of plain file) below
-and click the <input type="button" value="This Button" onclick="preparecode()"/>.</p>
+<p>To create pre-loaded program, enter code (or https url of plain file) below, select
+the language and click the button:</p>
 
 <textarea id="input" cols="80" rows="10">
 </textarea>
 
-<div id="output"></div>
+<br/><br/>
+
+<select id="langsel">
+  <option value="tp55">Turbo Pascal 5.5</option>
+  <option value="qb11">Quick Basic 1.1</option>
+  <option value="ml3">Matlab 3.05</option>
+</select>
+
+<input type="button" value="This Button" onclick="preparecode()"/>
+
+<p><a target="_blank" href="#" id="output"></a></p>
 
 <script>
 function preparecode() {
+  let root = location.href.replace(/index\.html.*/, '');
+  let lang = document.getElementById('langsel').value;
   let code = document.getElementById('input').value;
   let out = btoa(code);
-  out = 'append the following to the specific page url: ?p=' + out;
-  document.getElementById('output').innerHTML = out;
+  out = root + lang + '.html?p=' + out;
+  let outElem = document.getElementById('output');
+  outElem.href = outElem.innerHTML = out;
 }
 </script>
 
