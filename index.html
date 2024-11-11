@@ -11,6 +11,8 @@
 <h3><a href="./qb11.html">Quick Basic 1.1</a></h3>
 <h3><a href="./ml3.html">Matlab 3.05</a></h3>
 
+<p><a href="https://github.com/rodiongork/dosprog">Project page - you can study and clone files here</a></p>
+
 <hr/>
 
 <p>To create pre-loaded program, enter code (or https url of plain file) below, select
@@ -28,6 +30,9 @@ the language and click the button:</p>
 </select>
 
 <input type="button" value="This Button" onclick="preparecode()"/>
+<br/>
+<input type="checkbox" id="autorun">Autorun</input>
+
 
 <p><a target="_blank" href="#" id="output"></a></p>
 
@@ -37,7 +42,8 @@ function preparecode() {
   let lang = document.getElementById('langsel').value;
   let code = document.getElementById('input').value;
   let out = btoa(code);
-  out = root + lang + '.html?p=' + out;
+  let param = document.getElementById('autorun').checked ? 'P' : 'p';
+  out = root + lang + '.html?' + param + '=' + out;
   let outElem = document.getElementById('output');
   outElem.href = outElem.innerHTML = out;
 }
